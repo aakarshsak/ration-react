@@ -1,12 +1,12 @@
 import React, {Component} from 'react';
-import { Button, Form, Grid, Header, Image, Message, Segment, Input, GridColumn } from 'semantic-ui-react';
+import { Button, Form, Grid, Header, Image, Message, Segment, Input, GridColumn, Select } from 'semantic-ui-react';
 import Layout from '../../components/layout.js'
 import { Link, Router } from '../../routes';
 import post from '../../localmodules/express_post'; 
+import { getBlocksList, getCountryList, getStateList, matchCity, matchCountry, matchState, getCityList }  from '../../localmodules/location/location_dropdown';
 
 
 class RegisterForm extends Component {
-
     state = {
             pin :'',
             house:'',
@@ -14,6 +14,7 @@ class RegisterForm extends Component {
             district:'',
             state:'',
             phone:'',
+            country: '',
 
             first : '',
             middle : '',
@@ -28,14 +29,14 @@ class RegisterForm extends Component {
 
     onSubmit = async (event) => {
         event.preventDefault();
-        const {password, confirm_pass, email, pin, house, area, district, state, phone, first, middle, last, aadhar} = this.state;
+        const {password, confirm_pass, email, pin, house, area, district, state, phone, first, middle, last, aadhar, country} = this.state;
 
         const data = {
             name : { first, middle, last }, 
             password, 
             confirm_pass, 
             email, 
-            address : { house, area, district, state, pin, phone }, 
+            address : { house, area, district, state, pin, phone, country }, 
             aadhar
         };
 
@@ -54,7 +55,6 @@ class RegisterForm extends Component {
 
 
     render() {
-        console.log(this.state.res);
         return (
             <Layout>
                 <Grid verticalAlign='middle' >
@@ -93,8 +93,49 @@ class RegisterForm extends Component {
                                     />
                                 </Form.Field>
                             </Form.Group>
+
+                            <Form.Group widths='equal'>
+                                <Form.Field>
+                                    <label>Country</label>
+                                    <Select
+                                        placeholder = 'Country'
+                                        options = {getCountryList()}
+                                        defaultValue={this.state.country}
+                                        onChange={(event, data) => this.setState({country : data.value })}
+                                    />
+                                </Form.Field>
+                                <Form.Field>
+                                    <label>State</label>
+                                    <Select
+                                        placeholder = 'State'
+                                        options = {getStateList(matchCountry('India').id.toString())}
+                                        defaultValue={this.state.state}
+                                        onChange={(event, data) => this.setState({state : data.value })}
+                                    />
+                                </Form.Field>
+                                <Form.Field>
+                                    <label>District</label>
+                                    <Select
+                                        placeholder = 'District'
+                                        options = {getCityList(matchState(this.state.state, matchCountry('India').id.toString()).id)}
+                                        defaultValue={this.state.district}
+                                        onChange={(event, data) => this.setState({district : data.value })}
+                                    />
+                                </Form.Field>
+                                
+                            </Form.Group>
                             <Form.Group>
-                                <Form.Field width={8}>
+                                <Form.Field>
+                                    <label>Area</label>
+                                    <Select
+                                        placeholder='Area'
+                                        options={getBlocksList()}
+                                        defaultValue={this.state.area}
+                                        onChange={(event, data) => this.setState({ area : data.value })}
+                                    />
+
+                                </Form.Field>
+                                <Form.Field>
                                     <label>House</label>
                                     <Input
                                         placeholder = 'House'
@@ -103,40 +144,10 @@ class RegisterForm extends Component {
                                         onChange={event => this.setState({house : event.target.value })}
                                     />
                                 </Form.Field>
-                                <Form.Field width={8}>
-                                    <label>Area</label>
-                                    <Input
-                                        placeholder = 'Area'
-                                        type='text'
-                                        value={this.state.area}
-                                        onChange={event => this.setState({ area : event.target.value })}
-                                    />
-                                </Form.Field>
-                                
-                            </Form.Group>
-
-                            <Form.Group>
-                                <Form.Field width={6}>
-                                    <label>District</label>
-                                    <Input
-                                        placeholder = 'District'
-                                        type='text'
-                                        value={this.state.district}
-                                        onChange={event => this.setState({district : event.target.value })}
-                                    />
-                                </Form.Field>
-                                <Form.Field width={6}>
-                                    <label>State</label>
-                                    <Input
-                                        placeholder = 'State'
-                                        type='text'
-                                        value={this.state.state}
-                                        onChange={event => this.setState({state : event.target.value })}
-                                    />
-                                </Form.Field>
-                                <Form.Field width={4}>
+                                <Form.Field>
                                     <label>Pin</label>
                                     <Input
+                                        type='number'
                                         placeholder = 'Pin'
                                         value={this.state.pin}
                                         onChange={event => this.setState({ pin : event.target.value })}

@@ -452,16 +452,7 @@ class LoginForm extends react__WEBPACK_IMPORTED_MODULE_0__["Component"] {
 
     _defineProperty(this, "onSubmit", async event => {
       event.preventDefault();
-      this.callAPI(); // console.log ("In Submit : ", this.state.res);
-      // const options = {
-      //     method : 'get',
-      //     headers: { 'Content-Type':'application/json', 'x-auth-token' : this.state.res },
-      // };
-      // const res = await fetch('http://localhost:7800/user/login/me', options);
-      // const text = await JSON.stringify(res.text());
-      // const status = await res.status;
-      // console.log(text);
-      // console.log(status);
+      this.callAPI();
     });
 
     _defineProperty(this, "showError", () => {
@@ -497,7 +488,7 @@ class LoginForm extends react__WEBPACK_IMPORTED_MODULE_0__["Component"] {
     }, __jsx(semantic_ui_react__WEBPACK_IMPORTED_MODULE_1__["Segment"], {
       stacked: true
     }, __jsx(semantic_ui_react__WEBPACK_IMPORTED_MODULE_1__["Form"].Input, {
-      val: this.state.email,
+      value: this.state.email,
       onChange: event => {
         this.setState({
           email: event.target.value
@@ -509,7 +500,7 @@ class LoginForm extends react__WEBPACK_IMPORTED_MODULE_0__["Component"] {
       iconPosition: "left",
       placeholder: "E-mail address"
     }), __jsx(semantic_ui_react__WEBPACK_IMPORTED_MODULE_1__["Form"].Input, {
-      val: this.state.password,
+      value: this.state.password,
       onChange: event => {
         this.setState({
           password: event.target.value

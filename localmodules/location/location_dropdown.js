@@ -1,6 +1,8 @@
 const Countries = require('./countries.json')['countries'];
 const States = require('./states.json')['states'];
 const Cities = require('./citiesFixed.json')['cities'];
+const Blocks = require('./blocks.json')['blocks'];
+
 
 
 const matchCountry = (name) => {
@@ -48,35 +50,79 @@ const matchCity = (name, id) => {
 const getCountryList = () => {
     let countryList = [];
     const func = (item, index) => {
-        countryList.push(item.name);
+        let obj = {
+            key : '',
+            value : '',
+            text : '',
+        }
+        obj.key = item.id;
+        obj.value = item.name;
+        obj.text = item.name;
+        countryList.push(obj);
     }
 
     Countries.forEach(func);
-    return { countryList };
+    return countryList;
 }
 
 const getStateList = (id) => {
     let stateList = [];
-    const func = (item, index) => {
+    const func = (item) => {
         if(id === item.country_id){
-            stateList.push(item.name);
+            let obj = {
+                key : '',
+                value : '',
+                text : '',
+            }
+            obj.key = item.id;
+            obj.value = item.name;
+            obj.text = item.name;
+            stateList.push(obj);
         }
     }
-
     States.forEach(func);
-    return { stateList };
+    return stateList;
 }
 
 const getCityList = (id) => {
     let cityList = [];
-    const func = (item, index) => {
-        if(id === item.state_id && item.name[0] === 'T'){
-            cityList.push(item.name);
+    const func = (item) => {
+        if(id === item.state_id){
+            let obj = {
+                key : '',
+                value : '',
+                text : '',
+            }
+            obj.key = item.id;
+            obj.value = item.name;
+            obj.text = item.name;
+            cityList.push(obj);
         }
     }
 
     Cities.forEach(func);
-    return { cityList };
+    return cityList;
+}
+
+const getBlocksList = () => {
+    let blockList = [];
+    
+    const func = (item) => {
+        let obj = {
+            key : '',
+            value : '',
+            text : '',
+            shops : ''
+        }
+        obj.key = item.id;
+        obj.value = item.name;
+        obj.text = item.name;
+        obj.shops = item.shops;
+        blockList.push(obj);
+    }
+
+    Blocks.forEach(func);
+    return blockList;
 }
 
 
@@ -84,6 +130,7 @@ module.exports = {
     getCountryList,
     getStateList,
     getCityList,
+    getBlocksList,
     matchCountry,
     matchState,
     matchCity

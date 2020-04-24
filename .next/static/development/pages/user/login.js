@@ -61456,17 +61456,7 @@ var LoginForm = /*#__PURE__*/function (_Component) {
             case 0:
               event.preventDefault();
 
-              _this.callAPI(); // console.log ("In Submit : ", this.state.res);
-              // const options = {
-              //     method : 'get',
-              //     headers: { 'Content-Type':'application/json', 'x-auth-token' : this.state.res },
-              // };
-              // const res = await fetch('http://localhost:7800/user/login/me', options);
-              // const text = await JSON.stringify(res.text());
-              // const status = await res.status;
-              // console.log(text);
-              // console.log(status);
-
+              _this.callAPI();
 
             case 2:
             case "end":
@@ -61515,7 +61505,7 @@ var LoginForm = /*#__PURE__*/function (_Component) {
       }, __jsx(semantic_ui_react__WEBPACK_IMPORTED_MODULE_9__["Segment"], {
         stacked: true
       }, __jsx(semantic_ui_react__WEBPACK_IMPORTED_MODULE_9__["Form"].Input, {
-        val: this.state.email,
+        value: this.state.email,
         onChange: function onChange(event) {
           _this2.setState({
             email: event.target.value
@@ -61527,7 +61517,7 @@ var LoginForm = /*#__PURE__*/function (_Component) {
         iconPosition: "left",
         placeholder: "E-mail address"
       }), __jsx(semantic_ui_react__WEBPACK_IMPORTED_MODULE_9__["Form"].Input, {
-        val: this.state.password,
+        value: this.state.password,
         onChange: function onChange(event) {
           _this2.setState({
             password: event.target.value

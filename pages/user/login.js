@@ -42,16 +42,6 @@ class LoginForm extends Component {
     onSubmit = async (event) => {
         event.preventDefault();
         this.callAPI();
-        // console.log ("In Submit : ", this.state.res);
-        // const options = {
-        //     method : 'get',
-        //     headers: { 'Content-Type':'application/json', 'x-auth-token' : this.state.res },
-        // };
-        // const res = await fetch('http://localhost:7800/user/login/me', options);
-        // const text = await JSON.stringify(res.text());
-        // const status = await res.status;
-        // console.log(text);
-        // console.log(status);
     }
 
 
@@ -73,7 +63,7 @@ class LoginForm extends Component {
                     <Form size='large' onSubmit={this.onSubmit}>
                         <Segment stacked>
                         <Form.Input 
-                            val = {this.state.email}
+                            value = {this.state.email}
                             onChange = { event => {this.setState({email : event.target.value})}} 
                             type = 'email'
                             fluid 
@@ -81,7 +71,7 @@ class LoginForm extends Component {
                             iconPosition='left' 
                             placeholder='E-mail address' />
                         <Form.Input
-                            val = {this.state.password}
+                            value = {this.state.password}
                             onChange = { event => {this.setState({password : event.target.value})}} 
                             fluid
                             icon='lock'
