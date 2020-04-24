@@ -45,4 +45,20 @@ contract Shop {
         wheat = wheat - 5;
         arhad = arhad - 5;
     }
+
+
+    function getDetails() public view returns (
+        string, uint, uint, uint, string, string, address, string
+    ) {
+        return (
+            managerName,
+            rice,
+            wheat,
+            arhad,
+            fpdName,
+            shopName,
+            manager,
+            addr
+        );
+    }
 }
