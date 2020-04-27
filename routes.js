@@ -1,8 +1,9 @@
 const routes = require('next-routes')();
 
 routes
-.add('/shops/:address', '/shops/show')
-.add('/shops/:address/payment', '/shops/payment')
-.add('/:headerToken', '/');
+//.add('/update', '/update')
+.add('/:headerToken', '/')
+.add('/:headerToken/shops/:address', '/shops/show')
+.add('/:headerToken/shops/:address/payment', '/shops/payment');
 
 module.exports = routes;

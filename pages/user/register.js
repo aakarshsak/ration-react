@@ -126,9 +126,9 @@ class RegisterForm extends Component {
                             </Form.Group>
                             <Form.Group>
                                 <Form.Field>
-                                    <label>Area</label>
+                                    <label>Block</label>
                                     <Select
-                                        placeholder='Area'
+                                        placeholder='Block'
                                         options={getBlocksList()}
                                         defaultValue={this.state.area}
                                         onChange={(event, data) => this.setState({ area : data.value })}

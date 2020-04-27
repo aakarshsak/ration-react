@@ -3,24 +3,31 @@ import Layout from '../../components/layout';
 import Shop from '../../ethereum/shop';
 import { Card, Table, Grid, Button } from 'semantic-ui-react';
 import {  Link, Router } from '../../routes';
+import validate from '../../localmodules/token_validate';
 
 
 class ShopShow extends Component {
 
     static async getInitialProps(props) {
+        const { headerToken, loggedIn } = validate(props.query.headerToken);
         const address = props.query.address;
         const s = Shop(address);
         const details = await s.methods.getDetails().call();
+        const blockName = await s.methods.blockName().call();
         return { 
             managerName : details[0],
             items : [{quantity : details[1], name : 'Rice'},
                     {quantity: details[2], name : 'Wheat'},
-                    {quantity : details[3], name : 'Arhad'}],
-            fpdName : details[4],
-            shopName : details[5],
-            manager : details[6],
-            addr : details[7],
-            currentAddress : address
+                    {quantity : details[3], name : 'Arhad'},
+                    {quantity : details[4], name : 'Kerosene'}],
+            fpdName : details[5],
+            shopName : details[6],
+            manager : details[7],
+            addr : details[8],
+            currentAddress : address,
+            headerToken,
+            loggedIn,
+            blockName
         };
     }
 
@@ -69,15 +76,20 @@ class ShopShow extends Component {
                 header : this.props.managerName,
                 description : 'MANAGER NAME',
                 meta : 'This is the name of the shop.'
-            }
+            },
         ];
         const desc = [
+            {       
+                header : this.props.blockName,
+                description : 'BLOCK NAME',
+                meta : 'This is the name of the block.',
+            },
             {       
                 header : this.props.addr,
                 description : 'SHOP ADDRESS',
                 meta : 'This is the name of the shop.',
                 fluid : true
-            }
+            },
         ];
 
         return (
@@ -103,7 +115,7 @@ class ShopShow extends Component {
 
     render() {
         return (
-            <Layout>
+            <Layout headerToken={this.props.headerToken} loggedIn={this.props.loggedIn}>
                 <Grid style={{color:'#2185D0'}} columns={1}>
                     <Grid.Row>
                         <Grid.Column>

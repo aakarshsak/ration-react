@@ -28,7 +28,6 @@ export default class Navbar extends Component {
 
     onClick = (event, { name })=> {
         this.setState({activeItem:name});
-        console.log(name);
     }
 
     logOut = (event) => {
@@ -80,8 +79,6 @@ export default class Navbar extends Component {
         const headers = { 'Content-Type':'application/json', 'x-auth-token' : token};
         if(this.state.loggedIn){
             const {data, status} = await get('/user/login/me', headers);
-            console.log(status);
-            console.log(data);
             this.setState({user : data});
         }
 
@@ -95,7 +92,7 @@ export default class Navbar extends Component {
         const { activeItem  } = this.state;
         return (
                 <Menu size='massive' inverted color='blue'>
-                    <Link route={`/${validate(this.props.headerToken).headerToken}`}>
+                    <Link route={`/${validate('eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVlYTMwMTFjMDUwZGFlMzI3YTFiMGIxOSIsImlhdCI6MTU4NzkxNDQ4Nn0.ySCoAs9zW9If5lja8Ji_p9gl4cf-pcbBQDEEoKTkGmI').headerToken}`}>
                         <a className='item'>eR</a>
                     </Link>
                     <Container>

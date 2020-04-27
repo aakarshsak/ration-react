@@ -5,26 +5,41 @@ import Layout from '../components/layout';
 import { Link } from '../routes';
 import get from '../localmodules/express_get';
 import validate from '../localmodules/token_validate';
+import Shop from '../ethereum/shop';
 // import jsonArray from '../localmodules/data_initialization';
 
 class App extends Component {
     
     static async getInitialProps(props) {
+        //const accounts = await web3.eth.getAccounts();
+        //console.log('Accounts', accounts);
         const shops = await factory.methods.getDeployedShops().call();
+        let shopList = [];
+        for(let i=0;i<shops.length;i++){
+            const s = Shop(shops[i]);
+            const details = await s.methods.getDetails().call();
+            const obj = {
+                details,
+                address : shops[i]
+            };
+            shopList.push(obj);
+        }
+        //console.log(shopList);
         const { loggedIn, headerToken } = validate(props.query.headerToken);
-        return { shops, headerToken, loggedIn };
+        return { shops, headerToken, loggedIn, shopList };
     }
-    
-    renderShops() {
-        const items = this.props.shops.map(address => {
+
+
+    renderShops = () => {
+        const items = this.props.shopList.map((item) => {
             return{
-                header : address,
-                description : <Link route={`shops/${address}`}><a>View Shops</a></Link>,
-                fluid : true
+                header : item.details[6].toUpperCase(),
+                description : <Link route={`/${validate(this.props.headerToken).headerToken}/shops/${item.address}`}><a>View Shops</a></Link>,
+                meta : item.details[8].substring(0,item.details[8].toLowerCase().indexOf("Chiknayakanhalli".toLowerCase()))
             };
         });
 
-        return <Card.Group items={items}/>;
+        return <Card.Group items={items} itemsPerRow={2}/>;
     }
 
     onClick = async (event) => {
@@ -51,7 +66,6 @@ class App extends Component {
                         primary
                     />
                 </div>
-                <div>{this.props.headerToken}</div>
             </Layout>
         );
 

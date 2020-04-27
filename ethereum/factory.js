@@ -3,7 +3,7 @@ const ShopFactory = require('./build/ShopFactory.json');
 
 const instance = new web3.eth.Contract(
   JSON.parse(ShopFactory.interface),
-  '0x95C79efB891EDf04255c5783c475F7F8EDeb8f0b'
+  '0xD05067207ABF4E792Aa02971869Fd01A155e97bd'
 );
 
 
