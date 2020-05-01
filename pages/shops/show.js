@@ -32,9 +32,9 @@ class ShopShow extends Component {
     }
 
     renderTable() {
-        const tableRows = this.props.items.map(item => {
+        const tableRows = this.props.items.map((item, index) => {
             return (
-                <Table.Row>
+                <Table.Row key={index}>
                     <Table.Cell>{item.name}</Table.Cell>
                     <Table.Cell>{item.quantity}</Table.Cell>
                     <Table.Cell>{10}</Table.Cell>
@@ -78,25 +78,42 @@ class ShopShow extends Component {
                 meta : 'This is the name of the shop.'
             },
         ];
-        const desc = [
-            {       
-                header : this.props.blockName,
-                description : 'BLOCK NAME',
-                meta : 'This is the name of the block.',
-            },
-            {       
-                header : this.props.addr,
-                description : 'SHOP ADDRESS',
-                meta : 'This is the name of the shop.',
-                fluid : true
-            },
-        ];
 
         return (
             <div>
                 <Card.Group items = {items} itemsPerRow = {3}/>
-                <Card.Group items = {desc}/>
+                    
+                <Card.Group itemsPerRow={2}>
+                    <Card>
+                        <Card.Content>
+                            <Card.Header>{this.props.addr}</Card.Header>
+                            <Card.Meta>This is the name of the shop.</Card.Meta>
+                            <Card.Description>SHOP ADDRESS</Card.Description>
+                        </Card.Content>
+                    </Card>
+                    <Card>
+                        <Card.Content>
+                            <Card.Header>{this.props.blockName}</Card.Header>
+                            <Card.Meta>This is the name of the block.</Card.Meta>
+                            <Card.Description>BLOCK NAME</Card.Description>
+                        </Card.Content>
+                    </Card>
+                </Card.Group>
             </div>
+        );
+    }
+
+    renderRecordButton() {
+        return (
+
+            <Link route={`/${this.props.headerToken}/shops/record/${this.props.currentAddress}`}>
+                <a>
+                    <Button color='blue'>
+                    View Previous Record Details
+                    </Button>
+                </a>
+            </Link>
+
         );
     }
 
@@ -105,7 +122,7 @@ class ShopShow extends Component {
             <Link route={`/shops/${this.props.currentAddress}/payment`}>
                 <a>
                     <Button color='blue'>
-                     Make Payment
+                    Make Payment
                     </Button>
                 </a>
             </Link>
@@ -117,11 +134,6 @@ class ShopShow extends Component {
         return (
             <Layout headerToken={this.props.headerToken} loggedIn={this.props.loggedIn}>
                 <Grid style={{color:'#2185D0'}} columns={1}>
-                    <Grid.Row>
-                        <Grid.Column>
-                            {this.renderCard()}
-                        </Grid.Column>
-                    </Grid.Row>
                     <Grid.Row textAlign='center'>
                         <Grid.Column>
                             {this.renderTable()}
@@ -132,6 +144,17 @@ class ShopShow extends Component {
                             {this.renderButton()}
                         </Grid.Column>  
                     </Grid.Row>
+                    <Grid.Row>
+                        <Grid.Column>
+                            {this.renderCard()}
+                        </Grid.Column>
+                    </Grid.Row>
+                    <Grid.Row textAlign='center'>
+                        <Grid.Column>
+                            {this.renderRecordButton()}
+                        </Grid.Column>  
+                    </Grid.Row>
+                    
                 </Grid>
             </Layout>
         );

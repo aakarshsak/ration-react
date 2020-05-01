@@ -25,11 +25,12 @@ class RegisterForm extends Component {
         confirm_pass:'',
         email : '',
         aadhar : '',
+        gender : ''
     };
 
     onSubmit = async (event) => {
         event.preventDefault();
-        const {password, confirm_pass, email, pin, house, area, district, state, phone, first, middle, last, aadhar, country} = this.state;
+        const {password, confirm_pass, email, pin, house, area, district, state, phone, first, middle, last, aadhar, country,} = this.state;
 
         const data = {
             name : { first, middle, last }, 
@@ -37,7 +38,8 @@ class RegisterForm extends Component {
             confirm_pass, 
             email, 
             address : { house, area, district, state, pin, phone, country }, 
-            aadhar
+            aadhar,
+            gender
         };
 
         if(this.state.middle === '')
@@ -53,6 +55,12 @@ class RegisterForm extends Component {
         }
     }
 
+    getGenderOption = () => {
+        return ([
+            { key:'m', value:'Male', text:'Male' },
+            { key:'f', value:'Female', text:'Female'}
+        ]);
+    }
 
     render() {
         return (
@@ -153,6 +161,17 @@ class RegisterForm extends Component {
                                         onChange={event => this.setState({ pin : event.target.value })}
                                     />
                                 </Form.Field>
+                                <Form.Field>
+                                    <label>Gender</label>
+                                    <Select
+                                        placeholder='Gender'
+                                        options={this.getGenderOption()}
+                                        defaultValue={this.state.gender}
+                                        onChange={(event, data) => this.setState({ gender : data.value })}
+                                    />
+
+                                </Form.Field>
+                                
                             </Form.Group>
 
                             {/* <Form.Group>

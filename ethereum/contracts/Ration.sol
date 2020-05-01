@@ -16,6 +16,14 @@ contract ShopFactory {
 
 contract Shop {
     
+    struct Record {
+        string orderId;
+        string aadhar;
+        string time;
+    }
+    
+    Record[] public recordList;
+    mapping(string => string) records;
     address public manager;
     uint public totalAmount;
     // mapping(address => Customer) public customers;
@@ -40,8 +48,21 @@ contract Shop {
         manager = c;
         addr = add;
     }
-
-    function purchase() public {
+    
+    function aadharFromOrder(string aadhar) public view returns (string){
+        return records[aadhar];
+    }
+    
+    
+    function purchase(string aadhar, string orderId, string time) public payable{
+        require(msg.value > 70);
+        Record memory newRecord = Record({
+            orderId : orderId,
+            aadhar : aadhar,
+            time : time
+        });
+        records[aadhar] = orderId;
+        recordList.push(newRecord);
         totalAmount = 70;
         kerosene = kerosene - 5;
         rice = rice - 5;
@@ -73,5 +94,9 @@ contract Shop {
             manager,
             addr
         );
+    }
+    
+    function recordCount() public view returns (uint) {
+        return recordList.length;
     }
 }

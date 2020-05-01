@@ -6,29 +6,40 @@ import { Link } from '../routes';
 import get from '../localmodules/express_get';
 import validate from '../localmodules/token_validate';
 import Shop from '../ethereum/shop';
+import {  } from '../localmodules/location/location_dropdown';
 // import jsonArray from '../localmodules/data_initialization';
 
 class App extends Component {
     
+    state = { user : null };
     static async getInitialProps(props) {
-        //const accounts = await web3.eth.getAccounts();
-        //console.log('Accounts', accounts);
+
         const shops = await factory.methods.getDeployedShops().call();
         let shopList = [];
         for(let i=0;i<shops.length;i++){
             const s = Shop(shops[i]);
             const details = await s.methods.getDetails().call();
+            const blockName = await s.methods.blockName().call();
             const obj = {
                 details,
-                address : shops[i]
+                address : shops[i],
+                blockName
             };
             shopList.push(obj);
         }
         //console.log(shopList);
         const { loggedIn, headerToken } = validate(props.query.headerToken);
+
         return { shops, headerToken, loggedIn, shopList };
     }
 
+    getUserDetails = async (token) => {
+        const headers = { 'Content-Type':'application/json', 'x-auth-token' : token};
+        if(this.props.loggedIn){
+            const {data, status} = await get('/user/login/me', headers);
+            this.setState({user : data});
+        }
+    }
 
     renderShops = () => {
         const items = this.props.shopList.map((item) => {

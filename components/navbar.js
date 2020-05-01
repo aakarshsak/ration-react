@@ -7,7 +7,6 @@ import get from '../localmodules/express_get';
 export default class Navbar extends Component {
 
     state = {
-        activeItem : 'home',
         loggedIn : this.props.loggedIn,
         user : {
             name : {first :'', middle:'', last : ''},
@@ -26,15 +25,13 @@ export default class Navbar extends Component {
         this.getUserDetails(this.props.headerToken);
     }
 
-    onClick = (event, { name })=> {
-        this.setState({activeItem:name});
-    }
 
     logOut = (event) => {
         this.setState({ loggedIn : false });
-        Router.pushRoute('/user/login');
+        Router.pushRoute('/user/logout');
     }
 
+    
 
 
     logInStatusRender = () => {
@@ -92,30 +89,14 @@ export default class Navbar extends Component {
         const { activeItem  } = this.state;
         return (
                 <Menu size='massive' inverted color='blue'>
-                    <Link route={`/${validate('eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVlYTMwMTFjMDUwZGFlMzI3YTFiMGIxOSIsImlhdCI6MTU4NzkxNDQ4Nn0.ySCoAs9zW9If5lja8Ji_p9gl4cf-pcbBQDEEoKTkGmI').headerToken}`}>
-                        <a className='item'>eR</a>
-                    </Link>
+                    
                     <Container>
-                        <Menu.Item 
-                            name='home'
-                            active={activeItem === 'home'}
-                            onClick={this.onClick}
-                        />
-
-                        <Menu.Item 
-                            name='something1'
-                            active={activeItem === 'something1'}
-                            onClick={this.onClick}
-                        />
-
-                        <Menu.Item 
-                            name='something2'
-                            active={activeItem === 'something2'}
-                            onClick={this.onClick}
-                        />
-                    </Container>
-
+                        <Link route={`/${validate('eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVlYTMwMTFjMDUwZGFlMzI3YTFiMGIxOSIsImlhdCI6MTU4ODI3NzE0NH0.N8pZTLqwvgrSmkSYP9FJkXDBqSZUOgBWeCmE__ewS-o').headerToken}`}>
+                            <a className='item'>eR</a>
+                        </Link>
+                    
                     {this.logInStatusRender()}
+                    </Container>
                 </Menu>
         );
     }

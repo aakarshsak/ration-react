@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Form, Input, Button } from 'semantic-ui-react';
-import saveToEthereum from '../../localmodules/data_initialization';
+import { saveToEthereum, manualSaveToEthereum } from '../../localmodules/data_initialization';
 import factory from '../../ethereum/factory';
 import web3 from '../../ethereum/web3';
 import Shop from '../../ethereum/shop';
@@ -18,7 +18,6 @@ export default class UpdateBlockChain extends Component {
         arhad : '',
         kerosene : '',
         addr : '',
-        blockName : 'CHIKNAYAKANHALLI'
     }
 
     onSubmit = async (event) => {
@@ -40,12 +39,19 @@ export default class UpdateBlockChain extends Component {
         const addresses = await factory.methods.getDeployedShops().call();
         console.log(addresses[addresses.length-1]);
 
-        const s = Shop(addresses[addresses.length-1]);
+        for(let i=0;i<addresses.length;i++){
+            const s = Shop(addresses[i]);
+            await s.methods.createRequest("TUMAKURU")
+            .send({
+                from: accounts[0],
+            });
+        }
+    }
 
-        await s.methods.createRequest("TUMAKURU")
-        .send({
-          from: accounts[0],
-        });
+    saveMultiples = async (event) => {
+        event.preventDefault();
+        manualSaveToEthereum();
+
     }
 
 
@@ -139,6 +145,7 @@ export default class UpdateBlockChain extends Component {
                 </Form>
 
                 <Button onClick={this.onClick}>CLick</Button>
+                <Button onClick={this.saveMultiples}>Save Multiples</Button>
             </Layout>
         );
     }
