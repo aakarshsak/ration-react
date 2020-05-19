@@ -24,13 +24,13 @@ class RegisterForm extends Component {
         password : '',
         confirm_pass:'',
         email : '',
-        aadhar : '',
+        ration : '',
         gender : ''
     };
 
     onSubmit = async (event) => {
         event.preventDefault();
-        const {password, confirm_pass, email, pin, house, area, district, state, phone, first, middle, last, aadhar, country,} = this.state;
+        const {password, confirm_pass, email, pin, house, area, district, state, phone, first, middle, last, ration, country, gender} = this.state;
 
         const data = {
             name : { first, middle, last }, 
@@ -38,7 +38,7 @@ class RegisterForm extends Component {
             confirm_pass, 
             email, 
             address : { house, area, district, state, pin, phone, country }, 
-            aadhar,
+            ration,
             gender
         };
 
@@ -205,11 +205,11 @@ class RegisterForm extends Component {
                                     />
                                 </Form.Field>
                                 <Form.Field>
-                                    <label>Aadhar</label>
+                                    <label>Ration Card Number</label>
                                     <Input
-                                        placeholder = 'Aadhar'
-                                        value={this.state.aadhar}
-                                        onChange={event => this.setState({ aadhar : event.target.value })}
+                                        placeholder = 'Ration Card Number'
+                                        value={this.state.ration}
+                                        onChange={event => this.setState({ ration : event.target.value })}
                                     />
                                 </Form.Field>
                                 <Form.Field>

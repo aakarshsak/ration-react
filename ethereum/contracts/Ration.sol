@@ -2,15 +2,16 @@ pragma solidity ^0.4.25;
 
 contract ShopFactory {
     
-    address[] public deployedShops;
+    mapping(string => address[]) getBlockList;
+    //address[] public deployedShops;
 
-    function createShop(string managerName, uint rice, uint wheat, uint arhad, uint kerosene, string fpdName, string shopName, string addr) public {
+    function createShop(string managerName, uint rice, uint wheat, uint arhad, uint kerosene, string fpdName, string shopName, string addr, string blockName) public {
         address newShop = new Shop(managerName, rice, wheat, arhad, kerosene, fpdName, shopName, msg.sender, addr);
-        deployedShops.push(newShop);
+        getBlockList[blockName].push(newShop);
     }
 
-    function getDeployedShops() public view returns (address[]) {
-        return deployedShops;
+    function getDeployedShops(string blockName) public view returns (address[]) {
+        return getBlockList[blockName];
     }
 }
 
@@ -24,6 +25,7 @@ contract Shop {
     
     Record[] public recordList;
     mapping(string => string) records;
+    mapping(string => string) aadharDate;
     address public manager;
     uint public totalAmount;
     // mapping(address => Customer) public customers;
@@ -53,8 +55,12 @@ contract Shop {
         return records[aadhar];
     }
     
+    function getDate(string aadhar) public view returns(string) {
+        return aadharDate[aadhar];
+    }
     
-    function purchase(string aadhar, string orderId, string time) public payable{
+    
+    function purchase(string aadhar, string orderId, string time, uint kminus, uint rminus, uint wminus, uint aminus) public payable{
         require(msg.value > 70);
         Record memory newRecord = Record({
             orderId : orderId,
@@ -62,12 +68,13 @@ contract Shop {
             time : time
         });
         records[aadhar] = orderId;
+        aadharDate[aadhar] = time;
         recordList.push(newRecord);
-        totalAmount = 70;
-        kerosene = kerosene - 5;
-        rice = rice - 5;
-        wheat = wheat - 5;
-        arhad = arhad - 5;
+        totalAmount = rminus*2 + wminus*4 + aminus*3 + kminus*5;
+        kerosene = kerosene - kminus;
+        rice = rice - rminus;
+        wheat = wheat - wminus;
+        arhad = arhad - aminus;
     }
     
     modifier restricted() {

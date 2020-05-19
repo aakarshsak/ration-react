@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Button, Form, Grid, Header, Message, Segment } from 'semantic-ui-react';
+import { Button, Form, Grid, Header, Message, Segment, Icon } from 'semantic-ui-react';
 import Layout from '../../components/layout.js'
 import { Router, Link } from '../../routes';
 import validate from '../../localmodules/token_validate';
@@ -8,7 +8,7 @@ import post from '../../localmodules/express_post';
 class LoginForm extends Component {
 
     state = {
-        email : '',
+        ration : '',
         password : '',
         res : '',
         errorMessage : ''
@@ -17,7 +17,7 @@ class LoginForm extends Component {
     callAPI = async () => {
         this.setState({errorMessage : '', res : ''});
         const data = {
-            email : this.state.email,
+            ration : this.state.ration,
             password : this.state.password
         };
 
@@ -26,10 +26,11 @@ class LoginForm extends Component {
         try {
             const { text, status } = await post('/user/login', headers, data);
             if(status === 400){
-                this.setState({ errorMessage : text, email : '', password : '' });
+                this.setState({ errorMessage : text, ration : '', password : '' });
             }
             else if(status === 200) {
                 this.setState({ res : text });
+                this.setState({ errorMessage : "1"})
                 Router.pushRoute(`/${validate(this.state.res).headerToken}`);
             }
 
@@ -47,7 +48,23 @@ class LoginForm extends Component {
 
     showError = () => {
         if(this.state.errorMessage === ''){
-            return null;
+            return null;;
+        }
+        else if(this.state.errorMessage === "1"){
+            return (
+                <div>
+                    <Message positive>
+                        <Message.Header>Successfully Logged In.</Message.Header>
+                    </Message>
+                    <Message icon>
+                        <Icon name='circle notched' loading/>
+                        <Message.Content>
+                        <Message.Header>Wait few second</Message.Header>
+                        We are fetching content for you.
+                        </Message.Content>
+                    </Message>
+                </div>
+            );
         }
         return <Message error header={this.state.errorMessage}></Message>;
     }
@@ -63,13 +80,12 @@ class LoginForm extends Component {
                     <Form size='large' onSubmit={this.onSubmit}>
                         <Segment stacked>
                         <Form.Input 
-                            value = {this.state.email}
-                            onChange = { event => {this.setState({email : event.target.value})}} 
-                            type = 'email'
+                            value = {this.state.ration}
+                            onChange = { event => {this.setState({ration : event.target.value})}} 
                             fluid 
                             icon='user' 
                             iconPosition='left' 
-                            placeholder='E-mail address' />
+                            placeholder='Ration Card Number' />
                         <Form.Input
                             value = {this.state.password}
                             onChange = { event => {this.setState({password : event.target.value})}} 

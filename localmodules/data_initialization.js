@@ -22,7 +22,7 @@ const manualSaveToEthereum = async () => {
     obj = detailList[i]
     obj.addr = obj.addr + ", Tumakuru, Karnataka - 572103";
     await factory.methods
-      .createShop(obj.managerName, obj.rice, obj.wheat, obj.arhad, obj.kerosene, obj.fpdName, obj.shopName, obj.addr)
+      .createShop(obj.managerName, obj.rice, obj.wheat, obj.arhad, obj.kerosene, obj.fpdName, obj.shopName, obj.addr, "TUMAKURU")
       .send({
         from: accounts[0],
       });

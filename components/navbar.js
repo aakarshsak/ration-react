@@ -31,21 +31,21 @@ export default class Navbar extends Component {
         Router.pushRoute('/user/logout');
     }
 
+    onProfileClick = () => {
+        Router.pushRoute(`/user/details/${validate(this.props.headerToken).headerToken}`)
+    }
     
 
 
     logInStatusRender = () => {
+
         if(this.state.loggedIn){
             return (
                 <Menu.Menu position='right'>
-                    <Dropdown item text={this.state.user.name.first +" "+ this.state.user.name.last}>
-                        <Dropdown.Menu>
-                            <Dropdown.Item>First</Dropdown.Item>
-                            <Dropdown.Item>Second</Dropdown.Item>
-                            <Dropdown.Item>Third</Dropdown.Item>
-                            <Dropdown.Item>Fourth</Dropdown.Item>
-                        </Dropdown.Menu>
-                    </Dropdown>
+                    <Menu.Item
+                        name={this.state.user.name.first +" "+ this.state.user.name.last}
+                        onClick={this.onProfileClick}                  
+                    />
 
                     <Menu.Item 
                         name='Logout'
@@ -87,17 +87,24 @@ export default class Navbar extends Component {
     render() {
 
         const { activeItem  } = this.state;
+        let defaultToken;
+        if(this.props.headerToken === '')
+            defaultToken = `/`;
+        else{
+            defaultToken = `/${validate(this.props.headerToken).headerToken}`;
+        }
+        console.log(defaultToken);
         return (
-                <Menu size='massive' inverted color='blue'>
-                    
-                    <Container>
-                        <Link route={`/${validate('eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVlYTMwMTFjMDUwZGFlMzI3YTFiMGIxOSIsImlhdCI6MTU4ODI3NzE0NH0.N8pZTLqwvgrSmkSYP9FJkXDBqSZUOgBWeCmE__ewS-o').headerToken}`}>
-                            <a className='item'>eR</a>
-                        </Link>
-                    
-                    {this.logInStatusRender()}
-                    </Container>
-                </Menu>
+            <Menu size='massive' inverted color='blue'>
+                
+                <Container>
+                    <Link route={defaultToken}>
+                        <a className='item'>eR</a>
+                    </Link>
+                
+                {this.logInStatusRender()}
+                </Container>
+            </Menu>
         );
     }
 }

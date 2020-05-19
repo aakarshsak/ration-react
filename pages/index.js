@@ -13,8 +13,12 @@ class App extends Component {
     
     state = { user : null };
     static async getInitialProps(props) {
-
-        const shops = await factory.methods.getDeployedShops().call();
+        const { loggedIn, headerToken } = validate(props.query.headerToken);
+        if(loggedIn){
+            const headers = { 'Content-Type':'application/json', 'x-auth-token' : headerToken};
+            const {data, status} = await get('/user/login/me/blockName', headers);
+        }
+        const shops = await factory.methods.getDeployedShops("TUMAKURU").call();
         let shopList = [];
         for(let i=0;i<shops.length;i++){
             const s = Shop(shops[i]);
@@ -28,7 +32,7 @@ class App extends Component {
             shopList.push(obj);
         }
         //console.log(shopList);
-        const { loggedIn, headerToken } = validate(props.query.headerToken);
+        
 
         return { shops, headerToken, loggedIn, shopList };
     }
@@ -53,29 +57,11 @@ class App extends Component {
         return <Card.Group items={items} itemsPerRow={2}/>;
     }
 
-    onClick = async (event) => {
-        event.preventDefault();
-        const headers = { 
-                'Content-Type':'application/json',
-                'x-auth-token' : this.props.headerToken
-        };
-
-        const {data, status} = await get('/user/login/me', headers);
-        console.log(data);
-        console.log(status);
-    }
-
     render() {
         return (
             <Layout loggedIn={this.props.loggedIn} headerToken={this.props.headerToken}>
                 <div>
                     {this.renderShops()}
-                    <Button
-                        onClick={this.onClick}
-                        content="Create Shops"
-                        icon="add circle"
-                        primary
-                    />
                 </div>
             </Layout>
         );

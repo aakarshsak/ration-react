@@ -36,7 +36,7 @@ export default class UpdateBlockChain extends Component {
 
 
         const accounts = await web3.eth.getAccounts();
-        const addresses = await factory.methods.getDeployedShops().call();
+        const addresses = await factory.methods.getDeployedShops("TUMAKURU").call();
         console.log(addresses[addresses.length-1]);
 
         for(let i=0;i<addresses.length;i++){
