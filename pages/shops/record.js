@@ -12,20 +12,9 @@ export default class PreviousRecord extends Component {
     static async getInitialProps(props) {
         const { headerToken, loggedIn } = validate(props.query.headerToken);
         const address = props.query.address;
+        console.log(address);
         const shop = Shop(address);
-        // const recordLength = await shop.methods.recordCount().call();
-        // const rice = await shop.methods.rice().call();
-        // const wheat = await shop.methods.wheat().call();
-        // const arhad = await shop.methods.arhad().call();
-        // const kerosene = await shop.methods.kerosene().call();
-        // console.log(rice, wheat, arhad, kerosene);
-        // const records = await Promise.all(
-        //     Array(parseInt(recordLength))
-        //       .fill()
-        //       .map((element, index) => {
-        //         return shop.methods.recordList(index).call();
-        //       })
-        //   );
+        
         const fpdNameValue = await shop.methods.fpdName().call();
         const dataInp = {
             fpdName : fpdNameValue
@@ -50,21 +39,8 @@ export default class PreviousRecord extends Component {
         return { headerToken , loggedIn, address, records, nameList } //, recordLength, rice, wheat, arhad, kerosene };
     }
 
-    getHolderName = async (ration) => {
-        const data = {
-            ration 
-        }
-        const headers = {
-            'Content-Type':'application/json'
-        };
-        
-        const { text, status } = await post('/user/login/me/name', headers, data);
-        return "Name";
-    }
-
     renderTable() {
 
-        console.log(this.props.records);
         const tableRows = this.props.records.map((item, index) => {
             return (
                 <Table.Row key={index}>
@@ -74,8 +50,8 @@ export default class PreviousRecord extends Component {
                     <Table.Cell>{item.wheat}</Table.Cell>
                     <Table.Cell>{item.arhad}</Table.Cell>
                     <Table.Cell>{item.kerosene}</Table.Cell>
-                    <Table.Cell>{item.date}</Table.Cell>
-                    <Table.Cell>{item.orderid}</Table.Cell>
+                    <Table.Cell>{item.date.substring(0, item.date.indexOf('('))}</Table.Cell>
+                    {/* <Table.Cell>{item.orderid}</Table.Cell> */}
                 </Table.Row>
             );
         });
@@ -90,8 +66,8 @@ export default class PreviousRecord extends Component {
                             <Table.HeaderCell>Wheat</Table.HeaderCell>
                             <Table.HeaderCell>Arhad</Table.HeaderCell>
                             <Table.HeaderCell>Kerosene</Table.HeaderCell>
-                            <Table.HeaderCell>Date(Time)</Table.HeaderCell>
-                            <Table.HeaderCell>Order Id</Table.HeaderCell>
+                            <Table.HeaderCell>Date</Table.HeaderCell>
+                            {/* <Table.HeaderCell>Order Id</Table.HeaderCell> */}
                         </Table.Row>
                     </Table.Header>
                     <Table.Body>
@@ -111,3 +87,44 @@ export default class PreviousRecord extends Component {
         );
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// const recordLength = await shop.methods.recordCount().call();
+        // const rice = await shop.methods.rice().call();
+        // const wheat = await shop.methods.wheat().call();
+        // const arhad = await shop.methods.arhad().call();
+        // const kerosene = await shop.methods.kerosene().call();
+        // console.log(rice, wheat, arhad, kerosene);
+        // const records = await Promise.all(
+        //     Array(parseInt(recordLength))
+        //       .fill()
+        //       .map((element, index) => {
+        //         return shop.methods.recordList(index).call();
+        //       })
+        //   );

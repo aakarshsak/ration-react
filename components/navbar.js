@@ -93,13 +93,12 @@ export default class Navbar extends Component {
         else{
             defaultToken = `/${validate(this.props.headerToken).headerToken}`;
         }
-        console.log(defaultToken);
         return (
             <Menu size='massive' inverted color='blue'>
                 
                 <Container>
                     <Link route={defaultToken}>
-                        <a className='item'>eR</a>
+                        <a className='item'>eRation</a>
                     </Link>
                 
                 {this.logInStatusRender()}

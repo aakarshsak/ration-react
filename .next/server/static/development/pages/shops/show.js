@@ -93,6 +93,71 @@ module.exports =
 /************************************************************************/
 /******/ ({
 
+/***/ "./components/complaint.js":
+/*!*********************************!*\
+  !*** ./components/complaint.js ***!
+  \*********************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return CommentExampleComment; });
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "react");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var semantic_ui_react__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! semantic-ui-react */ "semantic-ui-react");
+/* harmony import */ var semantic_ui_react__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(semantic_ui_react__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var _localmodules_express_post_data__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../localmodules/express_post_data */ "./localmodules/express_post_data.js");
+/* harmony import */ var _localmodules_express_post_data__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(_localmodules_express_post_data__WEBPACK_IMPORTED_MODULE_2__);
+var __jsx = react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement;
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+
+
+
+class CommentExampleComment extends react__WEBPACK_IMPORTED_MODULE_0__["Component"] {
+  constructor(props) {
+    super(props);
+
+    _defineProperty(this, "state", {
+      currentComment: ''
+    });
+
+    _defineProperty(this, "postComplaint", event => {
+      event.preventDefault();
+    });
+  }
+
+  render() {
+    const d = ['a', 'b', 'c'];
+    const {
+      data
+    } = this.state;
+    console.log(data, d, 'inrender');
+    return __jsx(semantic_ui_react__WEBPACK_IMPORTED_MODULE_1__["Comment"].Group, null, __jsx(semantic_ui_react__WEBPACK_IMPORTED_MODULE_1__["Header"], {
+      as: "h3",
+      dividing: true
+    }, "Complaints"), this.props.renderValue, __jsx(semantic_ui_react__WEBPACK_IMPORTED_MODULE_1__["Form"], {
+      reply: true,
+      onSubmit: this.postComplaint
+    }, __jsx(semantic_ui_react__WEBPACK_IMPORTED_MODULE_1__["Form"].TextArea, {
+      value: this.state.currentComment,
+      onChange: e => this.setState({
+        currentComment: e.target.value
+      })
+    }), __jsx(semantic_ui_react__WEBPACK_IMPORTED_MODULE_1__["Button"], {
+      content: "Add Reply",
+      labelPosition: "left",
+      icon: "edit",
+      primary: true
+    })));
+  }
+
+}
+
+/***/ }),
+
 /***/ "./components/layout.js":
 /*!******************************!*\
   !*** ./components/layout.js ***!
@@ -252,7 +317,6 @@ class Navbar extends react__WEBPACK_IMPORTED_MODULE_0__["Component"] {
     if (this.props.headerToken === '') defaultToken = `/`;else {
       defaultToken = `/${_localmodules_token_validate__WEBPACK_IMPORTED_MODULE_3___default()(this.props.headerToken).headerToken}`;
     }
-    console.log(defaultToken);
     return __jsx(semantic_ui_react__WEBPACK_IMPORTED_MODULE_1__["Menu"], {
       size: "massive",
       inverted: true,
@@ -261,7 +325,7 @@ class Navbar extends react__WEBPACK_IMPORTED_MODULE_0__["Component"] {
       route: defaultToken
     }, __jsx("a", {
       className: "item"
-    }, "eR")), this.logInStatusRender()));
+    }, "eRation")), this.logInStatusRender()));
   }
 
 }
@@ -411,6 +475,40 @@ module.exports = post;
 
 /***/ }),
 
+/***/ "./localmodules/express_post_data.js":
+/*!*******************************************!*\
+  !*** ./localmodules/express_post_data.js ***!
+  \*******************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var _crossFetch = _interopRequireDefault(__webpack_require__(/*! cross-fetch */ "cross-fetch"));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+const postWithData = async (url, headers, dataInp) => {
+  const options = {
+    method: 'post',
+    headers,
+    body: JSON.stringify(dataInp)
+  };
+  const newUrl = 'http://localhost:7800' + url;
+  const res = await (0, _crossFetch.default)(newUrl, options);
+  const data = await res.json();
+  const status = await res.status;
+  return {
+    data,
+    status
+  };
+};
+
+module.exports = postWithData;
+
+/***/ }),
+
 /***/ "./localmodules/token_validate.js":
 /*!****************************************!*\
   !*** ./localmodules/token_validate.js ***!
@@ -465,9 +563,14 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _localmodules_custom_error__WEBPACK_IMPORTED_MODULE_8___default = /*#__PURE__*/__webpack_require__.n(_localmodules_custom_error__WEBPACK_IMPORTED_MODULE_8__);
 /* harmony import */ var _localmodules_express_post__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ../../localmodules/express_post */ "./localmodules/express_post.js");
 /* harmony import */ var _localmodules_express_post__WEBPACK_IMPORTED_MODULE_9___default = /*#__PURE__*/__webpack_require__.n(_localmodules_express_post__WEBPACK_IMPORTED_MODULE_9__);
+/* harmony import */ var _components_complaint__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ../../components/complaint */ "./components/complaint.js");
+/* harmony import */ var _localmodules_express_post_data__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ../../localmodules/express_post_data */ "./localmodules/express_post_data.js");
+/* harmony import */ var _localmodules_express_post_data__WEBPACK_IMPORTED_MODULE_11___default = /*#__PURE__*/__webpack_require__.n(_localmodules_express_post_data__WEBPACK_IMPORTED_MODULE_11__);
 var __jsx = react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement;
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+
 
 
 
@@ -490,7 +593,8 @@ class ShopShow extends react__WEBPACK_IMPORTED_MODULE_0__["Component"] {
       arhad: '',
       kerosene: '',
       tableError: '',
-      status: ''
+      status: '',
+      threeDigit: ''
     });
 
     _defineProperty(this, "getRation", async () => {
@@ -574,6 +678,9 @@ class ShopShow extends react__WEBPACK_IMPORTED_MODULE_0__["Component"] {
       const dateIns = new Date();
       const date = dateIns.toLocaleDateString() + '(' + dateIns.getHours() + ':' + dateIns.getMinutes() + ')';
       const threeDigit = 'OD20M05' + this.props.blockName.substring(0, 3) + Math.floor(Math.random() * Math.floor(1000));
+      this.setState({
+        threeDigit
+      });
       const ration = await this.getRation();
       const data = {
         rice: this.state.rice,
@@ -628,6 +735,34 @@ class ShopShow extends react__WEBPACK_IMPORTED_MODULE_0__["Component"] {
         });
       }
     });
+
+    _defineProperty(this, "renderComment", () => {
+      const data = ['a', 'b', 'c'];
+      const comments = this.props.dataComplaint.map((item, index) => {
+        return __jsx(semantic_ui_react__WEBPACK_IMPORTED_MODULE_3__["Comment"], {
+          key: index
+        }, __jsx(semantic_ui_react__WEBPACK_IMPORTED_MODULE_3__["Comment"].Content, null, __jsx(semantic_ui_react__WEBPACK_IMPORTED_MODULE_3__["Comment"].Author, {
+          as: "a"
+        }, item.name), __jsx(semantic_ui_react__WEBPACK_IMPORTED_MODULE_3__["Comment"].Metadata, null, __jsx("div", null, "Today at 5:42PM")), __jsx(semantic_ui_react__WEBPACK_IMPORTED_MODULE_3__["Comment"].Text, null, "How artistic!"), __jsx(semantic_ui_react__WEBPACK_IMPORTED_MODULE_3__["Comment"].Actions, null, __jsx(semantic_ui_react__WEBPACK_IMPORTED_MODULE_3__["Comment"].Action, null, "Reply"))));
+      });
+      return __jsx(semantic_ui_react__WEBPACK_IMPORTED_MODULE_3__["Comment"].Group, null, __jsx(semantic_ui_react__WEBPACK_IMPORTED_MODULE_3__["Header"], {
+        as: "h3",
+        dividing: true
+      }, "Complaints"), comments, __jsx(semantic_ui_react__WEBPACK_IMPORTED_MODULE_3__["Form"], {
+        reply: true,
+        onSubmit: this.postComplaint
+      }, __jsx(semantic_ui_react__WEBPACK_IMPORTED_MODULE_3__["Form"].TextArea, {
+        value: this.state.currentComment,
+        onChange: e => this.setState({
+          currentComment: e.target.value
+        })
+      }), __jsx(semantic_ui_react__WEBPACK_IMPORTED_MODULE_3__["Button"], {
+        content: "Add Reply",
+        labelPosition: "left",
+        icon: "edit",
+        primary: true
+      })));
+    });
   }
 
   static async getInitialProps(props) {
@@ -646,6 +781,17 @@ class ShopShow extends react__WEBPACK_IMPORTED_MODULE_0__["Component"] {
     const address = props.query.address;
     const s = Object(_ethereum_shop__WEBPACK_IMPORTED_MODULE_2__["default"])(address);
     const details = await s.methods.getDetails().call();
+    console.log(details[5]);
+    const dataInp = {
+      fpdName: details[5]
+    };
+    const headersNew = {
+      'Content-Type': 'application/json'
+    };
+    const dataComplaint = await _localmodules_express_post_data__WEBPACK_IMPORTED_MODULE_11___default()('/complaints/list', headers, dataInp);
+    console.log(dataComplaint.data.record, 'insidemethods'); // const dataComplaint = ['a', 'b', 'c'];
+
+    console.log(dataComplaint.data.record);
     return {
       managerName: details[0],
       items: [{
@@ -673,7 +819,8 @@ class ShopShow extends react__WEBPACK_IMPORTED_MODULE_0__["Component"] {
       headerToken,
       loggedIn,
       blockName: data.area,
-      address
+      address,
+      dataComplaint: dataComplaint.data.record
     };
   }
 
@@ -746,7 +893,7 @@ class ShopShow extends react__WEBPACK_IMPORTED_MODULE_0__["Component"] {
   renderTableError() {
     if (this.state.tableError === '') return null;else if (this.state.tableError === 'Success') return __jsx(semantic_ui_react__WEBPACK_IMPORTED_MODULE_3__["Message"], {
       color: "green"
-    }, 'Payment Successful.');
+    }, `Payment Successful.   Total Amount Paid is Rs.${parseInt(this.state.rice) * 2 + parseInt(this.state.wheat) * 4 + parseInt(this.state.arhad) * 3 + parseInt(this.state.kerosene) * 5}.   Order ID : ${this.state.threeDigit}`);
     return __jsx(semantic_ui_react__WEBPACK_IMPORTED_MODULE_3__["Message"], {
       color: "red"
     }, this.state.tableError);
@@ -774,7 +921,7 @@ class ShopShow extends react__WEBPACK_IMPORTED_MODULE_0__["Component"] {
       textAlign: "center"
     }, __jsx(semantic_ui_react__WEBPACK_IMPORTED_MODULE_3__["Grid"].Column, null, this.renderButton())), __jsx(semantic_ui_react__WEBPACK_IMPORTED_MODULE_3__["Grid"].Row, null, __jsx(semantic_ui_react__WEBPACK_IMPORTED_MODULE_3__["Grid"].Column, null, this.renderCard())), __jsx(semantic_ui_react__WEBPACK_IMPORTED_MODULE_3__["Grid"].Row, {
       textAlign: "center"
-    }, __jsx(semantic_ui_react__WEBPACK_IMPORTED_MODULE_3__["Grid"].Column, null, this.renderRecordButton()))));
+    }, __jsx(semantic_ui_react__WEBPACK_IMPORTED_MODULE_3__["Grid"].Column, null, this.renderRecordButton()))), this.renderComment());
   }
 
 }

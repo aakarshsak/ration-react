@@ -1,13 +1,15 @@
 import React, { Component } from 'react';
 import Layout from '../../components/layout';
 import Shop from '../../ethereum/shop';
-import { Card, Table, Grid, Button, Input, Message } from 'semantic-ui-react';
+import { Card, Table, Grid, Button, Input, Message, Form, Comment, Header } from 'semantic-ui-react';
 import {  Link, Router } from '../../routes';
 import validate from '../../localmodules/token_validate';
 import get from '../../localmodules/express_get';
 import web3 from '../../ethereum/web3';
 import CustomError from '../../localmodules/custom_error';
 import post from '../../localmodules/express_post';
+import ComplaintComponent from '../../components/complaint';
+import postWithData from '../../localmodules/express_post_data'
 
 
 class ShopShow extends Component {
@@ -18,7 +20,8 @@ class ShopShow extends Component {
         arhad : '',
         kerosene : '',
         tableError : '',
-        status : ''
+        status : '',
+        threeDigit: ''
     };
 
     static async getInitialProps(props) {
@@ -29,6 +32,22 @@ class ShopShow extends Component {
 
         const s = Shop(address);
         const details = await s.methods.getDetails().call();
+
+
+
+
+        console.log( details[5] );
+        const dataInp = {
+            fpdName : details[5] 
+        }
+        const headersNew = { 'Content-Type':'application/json'};
+        const dataComplaint = await postWithData('/complaints/list', headers, dataInp);
+        console.log(dataComplaint.data.record, 'insidemethods')
+        // const dataComplaint = ['a', 'b', 'c'];
+        console.log(dataComplaint.data.record);
+
+
+
         return { 
             managerName : details[0],
             items : [{quantity : details[1], name : 'Rice', price : '2'},
@@ -43,9 +62,12 @@ class ShopShow extends Component {
             headerToken,
             loggedIn,
             blockName : data.area,
-            address
+            address,
+            dataComplaint : dataComplaint.data.record
         };
     }
+
+    
 
     renderTable() {
         const items = this.props.items;
@@ -228,7 +250,7 @@ class ShopShow extends Component {
         if(this.state.tableError === '')
             return null;
         else if(this.state.tableError === 'Success')
-            return <Message color='green'>{'Payment Successful.'}</Message>;
+            return <Message color='green'>{`Payment Successful.   Total Amount Paid is Rs.${parseInt(this.state.rice) * 2 + parseInt(this.state.wheat)*4 + parseInt(this.state.arhad)*3 + parseInt(this.state.kerosene)*5}.   Order ID : ${this.state.threeDigit}`}</Message>;
         return <Message color='red'>{this.state.tableError}</Message>;
     }
 
@@ -262,6 +284,7 @@ class ShopShow extends Component {
         const dateIns = new Date;
         const date = dateIns.toLocaleDateString() + '(' +dateIns.getHours() +':'+ dateIns.getMinutes() + ')';
         const threeDigit = 'OD20M05' + this.props.blockName.substring(0,3) + Math.floor(Math.random() * Math.floor(1000));
+        this.setState({threeDigit});
         const ration = await this.getRation();
         const data = {
             rice : this.state.rice,
@@ -316,6 +339,45 @@ class ShopShow extends Component {
         );
     }
 
+    renderComment = () => {
+        const data = ['a', 'b', 'c'];
+        const comments = this.props.dataComplaint.map((item, index) => {
+            return (
+                <Comment key={index}>
+                    <Comment.Content>
+                    <Comment.Author as='a'>{item.name}</Comment.Author>
+                    <Comment.Metadata>
+                        <div>Today at 5:42PM</div>
+                    </Comment.Metadata>
+                    <Comment.Text>How artistic!</Comment.Text>
+                    <Comment.Actions>
+                        <Comment.Action>Reply</Comment.Action>
+                    </Comment.Actions>
+                    </Comment.Content>
+                </Comment>
+            );
+        });
+
+        return (
+            <Comment.Group>
+                <Header as='h3' dividing>
+                    Complaints
+                </Header>
+                
+                {comments}
+            
+                <Form reply onSubmit={this.postComplaint}>
+                    <Form.TextArea 
+                        value={this.state.currentComment}
+                        onChange = {(e) => this.setState({currentComment : e.target.value})}
+                    />
+                    <Button content='Add Reply' labelPosition='left' icon='edit' primary />
+                </Form>
+            </Comment.Group>
+        );
+
+    }
+
 
     render() {
         return (
@@ -339,10 +401,15 @@ class ShopShow extends Component {
                     <Grid.Row textAlign='center'>
                         <Grid.Column>
                             {this.renderRecordButton()}
-                        </Grid.Column>  
+                        </Grid.Column>
+                        {/* <Grid.Column>
+                            {this.renderComplaintButton()}
+                        </Grid.Column>    */}
                     </Grid.Row>
+
                     
                 </Grid>
+                {this.renderComment()}
             </Layout>
         );
     }
