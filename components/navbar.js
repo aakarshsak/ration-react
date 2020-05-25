@@ -88,11 +88,8 @@ export default class Navbar extends Component {
 
         const { activeItem  } = this.state;
         let defaultToken;
-        if(this.props.headerToken === '')
-            defaultToken = `/`;
-        else{
-            defaultToken = `/${validate(this.props.headerToken).headerToken}`;
-        }
+        defaultToken = `/${validate(this.props.headerToken).headerToken}`;
+        
         return (
             <Menu size='massive' inverted color='blue'>
                 

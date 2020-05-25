@@ -88,7 +88,7 @@ module.exports =
 /******/
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 6);
+/******/ 	return __webpack_require__(__webpack_require__.s = 3);
 /******/ })
 /************************************************************************/
 /******/ ({
@@ -249,9 +249,7 @@ class Navbar extends react__WEBPACK_IMPORTED_MODULE_0__["Component"] {
       activeItem
     } = this.state;
     let defaultToken;
-    if (this.props.headerToken === '') defaultToken = `/`;else {
-      defaultToken = `/${_localmodules_token_validate__WEBPACK_IMPORTED_MODULE_3___default()(this.props.headerToken).headerToken}`;
-    }
+    defaultToken = `/${_localmodules_token_validate__WEBPACK_IMPORTED_MODULE_3___default()(this.props.headerToken).headerToken}`;
     return __jsx(semantic_ui_react__WEBPACK_IMPORTED_MODULE_1__["Menu"], {
       size: "massive",
       inverted: true,
@@ -499,7 +497,6 @@ class PreviousRecord extends react__WEBPACK_IMPORTED_MODULE_0__["Component"] {
       status
     } = await _localmodules_express_post_data__WEBPACK_IMPORTED_MODULE_5___default()('/record/record_list', headers, dataInp);
     const records = data['result'];
-    console.log(records);
     let nameList = [];
 
     for (let i = 0; i < records.length; i++) {
@@ -532,7 +529,7 @@ class PreviousRecord extends react__WEBPACK_IMPORTED_MODULE_0__["Component"] {
         key: index
       }, __jsx(semantic_ui_react__WEBPACK_IMPORTED_MODULE_3__["Table"].Cell, null, this.props.records.length - index), __jsx(semantic_ui_react__WEBPACK_IMPORTED_MODULE_3__["Table"].Cell, null, this.props.nameList[index]), __jsx(semantic_ui_react__WEBPACK_IMPORTED_MODULE_3__["Table"].Cell, null, item.rice), __jsx(semantic_ui_react__WEBPACK_IMPORTED_MODULE_3__["Table"].Cell, null, item.wheat), __jsx(semantic_ui_react__WEBPACK_IMPORTED_MODULE_3__["Table"].Cell, null, item.arhad), __jsx(semantic_ui_react__WEBPACK_IMPORTED_MODULE_3__["Table"].Cell, null, item.kerosene), __jsx(semantic_ui_react__WEBPACK_IMPORTED_MODULE_3__["Table"].Cell, null, item.date.substring(0, item.date.indexOf('('))));
     });
-    return __jsx("div", null, __jsx(semantic_ui_react__WEBPACK_IMPORTED_MODULE_3__["Table"], null, __jsx(semantic_ui_react__WEBPACK_IMPORTED_MODULE_3__["Table"].Header, null, __jsx(semantic_ui_react__WEBPACK_IMPORTED_MODULE_3__["Table"].Row, null, __jsx(semantic_ui_react__WEBPACK_IMPORTED_MODULE_3__["Table"].HeaderCell, null, "SLNO."), __jsx(semantic_ui_react__WEBPACK_IMPORTED_MODULE_3__["Table"].HeaderCell, null, "Holder Name"), __jsx(semantic_ui_react__WEBPACK_IMPORTED_MODULE_3__["Table"].HeaderCell, null, "Rice"), __jsx(semantic_ui_react__WEBPACK_IMPORTED_MODULE_3__["Table"].HeaderCell, null, "Wheat"), __jsx(semantic_ui_react__WEBPACK_IMPORTED_MODULE_3__["Table"].HeaderCell, null, "Arhad"), __jsx(semantic_ui_react__WEBPACK_IMPORTED_MODULE_3__["Table"].HeaderCell, null, "Kerosene"), __jsx(semantic_ui_react__WEBPACK_IMPORTED_MODULE_3__["Table"].HeaderCell, null, "Date"))), __jsx(semantic_ui_react__WEBPACK_IMPORTED_MODULE_3__["Table"].Body, null, tableRows.reverse())));
+    return __jsx("div", null, __jsx(semantic_ui_react__WEBPACK_IMPORTED_MODULE_3__["Table"], null, __jsx(semantic_ui_react__WEBPACK_IMPORTED_MODULE_3__["Table"].Header, null, __jsx(semantic_ui_react__WEBPACK_IMPORTED_MODULE_3__["Table"].Row, null, __jsx(semantic_ui_react__WEBPACK_IMPORTED_MODULE_3__["Table"].HeaderCell, null, "SLNO."), __jsx(semantic_ui_react__WEBPACK_IMPORTED_MODULE_3__["Table"].HeaderCell, null, "Holder Name"), __jsx(semantic_ui_react__WEBPACK_IMPORTED_MODULE_3__["Table"].HeaderCell, null, "Rice"), __jsx(semantic_ui_react__WEBPACK_IMPORTED_MODULE_3__["Table"].HeaderCell, null, "Wheat"), __jsx(semantic_ui_react__WEBPACK_IMPORTED_MODULE_3__["Table"].HeaderCell, null, "Arhad"), __jsx(semantic_ui_react__WEBPACK_IMPORTED_MODULE_3__["Table"].HeaderCell, null, "Sugar"), __jsx(semantic_ui_react__WEBPACK_IMPORTED_MODULE_3__["Table"].HeaderCell, null, "Date"))), __jsx(semantic_ui_react__WEBPACK_IMPORTED_MODULE_3__["Table"].Body, null, tableRows.reverse())));
   }
 
   render() {
@@ -574,13 +571,13 @@ class PreviousRecord extends react__WEBPACK_IMPORTED_MODULE_0__["Component"] {
 const routes = __webpack_require__(/*! next-routes */ "next-routes")();
 
 routes //.add('/update', '/update')
-.add('/user/details/:headerToken', '/user/details').add('/:headerToken', '/').add('/:headerToken/shops/:address', '/shops/show').add('/:headerToken/shops/record/:address', '/shops/record'); // .add('/:headerToken/shops/:address/payment', '/shops/payment')
+.add('/user/details/:headerToken', '/user/details').add('/:headerToken', '/').add('/:headerToken/shops/:address', '/shops/show').add('/:headerToken/shops/record/:address', '/shops/record').add('/:headerToken/shops/:transaction/receipt/:address', '/shops/receipt'); // .add('/:headerToken/shops/:address/payment', '/shops/payment')
 
 module.exports = routes;
 
 /***/ }),
 
-/***/ 6:
+/***/ 3:
 /*!*************************************!*\
   !*** multi ./pages/shops/record.js ***!
   \*************************************/

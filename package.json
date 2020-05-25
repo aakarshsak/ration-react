@@ -17,6 +17,7 @@
     "mocha": "^7.1.0",
     "next": "^9.2.2",
     "next-routes": "^1.4.2",
+    "qrcode.react": "^1.0.0",
     "react": "^16.13.0",
     "react-dom": "^16.13.0",
     "semantic-ui-css": "^2.4.1",

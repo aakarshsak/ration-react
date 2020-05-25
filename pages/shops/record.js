@@ -20,9 +20,8 @@ export default class PreviousRecord extends Component {
             fpdName : fpdNameValue
         }
         const headers = { 'Content-Type':'application/json'};
-        const {data, status} = await postWithData('/record/record_list', headers, dataInp)
+        const { data, status } = await postWithData('/record/record_list', headers, dataInp)
         const records = data['result'];
-        console.log(records);
         let nameList = [];
         for(let i=0;i<records.length;i++){
             const data = {
@@ -65,7 +64,7 @@ export default class PreviousRecord extends Component {
                             <Table.HeaderCell>Rice</Table.HeaderCell>
                             <Table.HeaderCell>Wheat</Table.HeaderCell>
                             <Table.HeaderCell>Arhad</Table.HeaderCell>
-                            <Table.HeaderCell>Kerosene</Table.HeaderCell>
+                            <Table.HeaderCell>Sugar</Table.HeaderCell>
                             <Table.HeaderCell>Date</Table.HeaderCell>
                             {/* <Table.HeaderCell>Order Id</Table.HeaderCell> */}
                         </Table.Row>
@@ -81,9 +80,10 @@ export default class PreviousRecord extends Component {
     render() {
         return (
             <Layout loggedIn={this.props.loggedIn} headerToken={this.props.headerToken}>
-                <Header as='h2' textAlign='center' style={{color:'#2185d0'}}>RECORD TIMESTAMP</Header>
-                {this.renderTable()}
+                 <Header as='h2' textAlign='center' style={{color:'#2185d0'}}>RECORD TIMESTAMP</Header>
+                 {this.renderTable()}
             </Layout>
+                
         );
     }
 }

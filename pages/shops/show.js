@@ -8,7 +8,6 @@ import get from '../../localmodules/express_get';
 import web3 from '../../ethereum/web3';
 import CustomError from '../../localmodules/custom_error';
 import post from '../../localmodules/express_post';
-import ComplaintComponent from '../../components/complaint';
 import postWithData from '../../localmodules/express_post_data'
 
 
@@ -21,19 +20,18 @@ class ShopShow extends Component {
         kerosene : '',
         tableError : '',
         status : '',
-        threeDigit: ''
+        threeDigit: '',
+        complaint : ''
     };
 
     static async getInitialProps(props) {
         const { headerToken, loggedIn } = validate(props.query.headerToken);
         const headers = { 'Content-Type':'application/json', 'x-auth-token' : headerToken};
-        const {data, status} = await get('/user/login/me/blockName', headers);
+        const {data, status} = await get('/user/login/me', headers);
         const address = props.query.address;
 
         const s = Shop(address);
         const details = await s.methods.getDetails().call();
-
-
 
 
         console.log( details[5] );
@@ -41,7 +39,7 @@ class ShopShow extends Component {
             fpdName : details[5] 
         }
         const headersNew = { 'Content-Type':'application/json'};
-        const dataComplaint = await postWithData('/complaints/list', headers, dataInp);
+        const dataComplaint = await postWithData('/complaints/list', headersNew, dataInp);
         console.log(dataComplaint.data.record, 'insidemethods')
         // const dataComplaint = ['a', 'b', 'c'];
         console.log(dataComplaint.data.record);
@@ -53,7 +51,7 @@ class ShopShow extends Component {
             items : [{quantity : details[1], name : 'Rice', price : '2'},
                     {quantity: details[2], name : 'Wheat', price : '4'},
                     {quantity : details[3], name : 'Arhad', price : '3'},
-                    {quantity : details[4], name : 'Kerosene', price : '5'}],
+                    {quantity : details[4], name : 'Sugar', price : '5'}],
             fpdName : details[5],
             shopName : details[6],
             manager : details[7],
@@ -61,9 +59,10 @@ class ShopShow extends Component {
             currentAddress : address,
             headerToken,
             loggedIn,
-            blockName : data.area,
+            blockName : data.address.area,
             address,
-            dataComplaint : dataComplaint.data.record
+            name : data.name,
+            dataComplaint : dataComplaint.data.record,
         };
     }
 
@@ -269,7 +268,7 @@ class ShopShow extends Component {
             orderid : threeDigit,
             fpdName : this.props.fpdName
         };
-
+        this.setState({threeDigit});
         const headers = { 'Content-Type':'application/json' };
         const {text, status} = await post('/record/verify', headers, data);
         console.log(status, "Func");
@@ -283,8 +282,7 @@ class ShopShow extends Component {
     saveToMongo = async() => {
         const dateIns = new Date;
         const date = dateIns.toLocaleDateString() + '(' +dateIns.getHours() +':'+ dateIns.getMinutes() + ')';
-        const threeDigit = 'OD20M05' + this.props.blockName.substring(0,3) + Math.floor(Math.random() * Math.floor(1000));
-        this.setState({threeDigit});
+        const threeDigit = this.state.threeDigit;
         const ration = await this.getRation();
         const data = {
             rice : this.state.rice,
@@ -312,10 +310,11 @@ class ShopShow extends Component {
             if(!(this.state.status === 400)){
                 const dateIns = new Date;
                 const date = dateIns.toLocaleDateString() + '(' +dateIns.getHours() +':'+ dateIns.getMinutes() + ')';
-                const threeDigit = 'OD20M05' + this.props.blockName.substring(0,3) + Math.floor(Math.random() * Math.floor(1000));
+                const threeDigit = this.state.threeDigit;
                 const ration = await this.getRation();
                 const accounts = await web3.eth.getAccounts();
                 const s = Shop(this.props.address);
+                const transaction = this.state.rice + '-' + this.state.wheat + '-' + this.state.arhad + '-' + this.state.kerosene + '-' + threeDigit;
                 await s.methods
                 .purchase(ration, threeDigit, date, this.state.kerosene, this.state.rice, this.state.wheat, this.state.arhad)
                 .send({
@@ -323,6 +322,8 @@ class ShopShow extends Component {
                     value: web3.utils.toWei('72', 'wei')
                 });
                 this.saveToMongo();
+                console.log(transaction);
+                Router.pushRoute(`/${validate(this.props.headerToken).headerToken}/shops/${transaction}/receipt/${this.props.address}`);
             }
             
         } catch(e) {
@@ -339,20 +340,34 @@ class ShopShow extends Component {
         );
     }
 
+    postComplaint = async (e) => {
+        e.preventDefault();
+        
+        let dataInp = {
+            fpdName : this.props.fpdName,
+            name : this.props.name.first + " " + this.props.name.last,
+            comment : this.state.complaint
+        }
+        const headers = { 'Content-Type':'application/json'};
+        const { text,status } = await post('/complaints', headers, dataInp);
+        console.log(text);
+        dataInp.date = 'Just now'
+        this.props.dataComplaint.push(dataInp);
+        this.setState({complaint : ''});
+    }
+
     renderComment = () => {
-        const data = ['a', 'b', 'c'];
+
         const comments = this.props.dataComplaint.map((item, index) => {
             return (
                 <Comment key={index}>
                     <Comment.Content>
                     <Comment.Author as='a'>{item.name}</Comment.Author>
                     <Comment.Metadata>
-                        <div>Today at 5:42PM</div>
+                        <div>{item.date}</div>
                     </Comment.Metadata>
-                    <Comment.Text>How artistic!</Comment.Text>
-                    <Comment.Actions>
-                        <Comment.Action>Reply</Comment.Action>
-                    </Comment.Actions>
+                    <Comment.Text>{item.comment}</Comment.Text>
+                    
                     </Comment.Content>
                 </Comment>
             );
@@ -366,12 +381,12 @@ class ShopShow extends Component {
                 
                 {comments}
             
-                <Form reply onSubmit={this.postComplaint}>
+                <Form onSubmit={this.postComplaint}>
                     <Form.TextArea 
-                        value={this.state.currentComment}
-                        onChange = {(e) => this.setState({currentComment : e.target.value})}
+                        value={this.state.complaint}
+                        onChange = {(e) => this.setState({complaint : e.target.value})}
                     />
-                    <Button content='Add Reply' labelPosition='left' icon='edit' primary />
+                    <Button content='Add Complaint' labelPosition='left' icon='edit' primary />
                 </Form>
             </Comment.Group>
         );
